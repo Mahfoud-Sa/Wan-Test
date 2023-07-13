@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqflite.dart' as sql;
@@ -5,6 +8,7 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wan_test/person.dart';
+import 'package:wan_test/database/db.dart';
 
 class SqlDb {
   static Database? _db;
@@ -44,16 +48,19 @@ class SqlDb {
  ''');
   }
 
-  readData() async {
+  Future<Map> getCurrentPerson() async {
+    SharedPreferences personShrpre = await SharedPreferences.getInstance();
+    int id = int.parse(personShrpre.get('id').toString());
+
     Database? mydb = await db;
-    List<Map> response = await mydb!.rawQuery("SELECT * FROM students");
-    return response;
+    List<Map> response =
+        await mydb!.rawQuery("SELECT * FROM persons where id=$id");
+    return response.first;
   }
 
   insertData(String sql) async {
     Database? mydb = await db;
     int response = await mydb!.rawInsert(sql);
-    print(response);
 
     return response;
   }
@@ -67,32 +74,46 @@ class SqlDb {
   deleteData(int id) async {
     Database? mydb = await db;
     int response = await mydb!.rawDelete("delete from students where id=$id");
-    print(response);
     return response;
+  }
+
+  Future<bool> LogIn(String useName, String password) async {
+    Database? mydb = await db;
+
+    bool state = false;
+
+    var response = await mydb!.rawQuery('select * from persons ');
+    for (var usr in response.toList()) {
+      if (usr['usrName'] == useName && usr['password'] == password) {
+        state = true;
+        SharedPreferences personShrpre = await SharedPreferences.getInstance();
+        personShrpre.setString('personName', usr['fullName'].toString());
+        personShrpre.setString('personEmail', usr['e_mail'].toString());
+        personShrpre.setInt('id', int.parse(usr['id'].toString()));
+
+        break;
+      }
+    }
+
+    return state;
   }
 }
 
 class AppProbider with ChangeNotifier {
-  DarkThemePreference darkThemePreference = DarkThemePreference();
-  bool _darkTheme = false;
-  bool get darkTheme => _darkTheme;
-
-  set darkTheme(bool value) {
-    _darkTheme = value;
-    darkThemePreference.setDarkTheme(value);
+  int userIndex = -1;
+  ThemeMode themMode = ThemeMode.light;
+  //List<String> account = getAcount();
+  void changeTheme() {
+    if (themMode == ThemeMode.dark) {
+      themMode = ThemeMode.light;
+    } else {
+      themMode = ThemeMode.dark;
+    }
+    // darkThemePreference.setDarkTheme(value);
     notifyListeners();
   }
 }
 
-class DarkThemePreference {
-  static const THEME_STATE = "THEMESTATE";
-  setDarkTheme(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(THEME_STATE, value);
-  }
 
-  Future<bool> getThene() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(THEME_STATE) ?? false;
-  }
-}
+
+//Future<Person> getCurrentUser(int index) {}

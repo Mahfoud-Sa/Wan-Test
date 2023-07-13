@@ -271,7 +271,7 @@ class _AddStudentPageState extends State<SinginPage> {
                     if (formstate.currentState!.validate()) {
                       sql.insertData('''
                           INSERT INTO "persons" ( 'fullName','idNum','phoneNum','e_mail','address','usrName',password,gender)
-                          VALUES ("${fullNameCont.text}","${idCont.text}","${phoneNumCont.text}","${emailCont.text}","${addCont.text}","${userNameCont.text}","{$passwordCont.text}","${gender}")
+                          VALUES ("${fullNameCont.text}","${idCont.text}","${phoneNumCont.text}","${emailCont.text}","${addCont.text}","${userNameCont.text}","${passwordCont.text}","${gender}")
                           ''');
 
                       Navigator.of(context).pushAndRemoveUntil(

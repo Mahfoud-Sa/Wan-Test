@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:wan_test/pages/home_page.dart';
+import 'package:wan_test/pages/singin_page.dart';
+import 'package:provider/provider.dart';
+import 'package:wan_test/person.dart';
 import '../database/db.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,8 +17,8 @@ class _AddStudentPageState extends State<LoginPage> {
   SqlDb sql = SqlDb();
   final formstate = GlobalKey<FormState>();
 
-  TextEditingController nameCont = TextEditingController();
-  TextEditingController idCont = TextEditingController();
+  TextEditingController userCont = TextEditingController();
+  TextEditingController passwordCont = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,10 @@ class _AddStudentPageState extends State<LoginPage> {
         ),
         body: Column(
           children: [
-            Text('سجل الدخول الى حسابك'),
+            Text(
+              'سجل الدخول الى حسابك',
+              style: TextStyle(fontSize: 25),
+            ),
             Form(
               key: formstate,
               child: Column(children: [
@@ -38,7 +44,7 @@ class _AddStudentPageState extends State<LoginPage> {
                     }
                     return null;
                   },
-                  controller: nameCont,
+                  controller: userCont,
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 25.0),
                   decoration: InputDecoration(
@@ -60,7 +66,7 @@ class _AddStudentPageState extends State<LoginPage> {
                     }
                     return null;
                   },
-                  controller: idCont,
+                  controller: passwordCont,
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 25.0),
                   decoration: InputDecoration(
@@ -76,6 +82,57 @@ class _AddStudentPageState extends State<LoginPage> {
                 ),
               ]),
             ),
+            Consumer<AppProbider>(
+              builder: (context, provider, child) {
+                return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 120, 170, 223)),
+                    onPressed: () async {
+                      if (formstate.currentState!.validate()) {
+                        if (await sql.LogIn(userCont.text, passwordCont.text)) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                              (route) => false);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  showCloseIcon: true,
+                                  backgroundColor: Colors.green,
+                                  content: Text('اهلا وسهلا')));
+
+                          //print(provider.psr.e_mail);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  showCloseIcon: true,
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                      'اسم المستخدم او كلمة المرور خطاء')));
+                        }
+                      }
+                    },
+                    child: const Text(
+                      'تسجيل الدخول',
+                      style: TextStyle(fontSize: 25, color: Colors.white),
+                    ));
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      showCloseIcon: true,
+                      backgroundColor: Colors.orange,
+                      content:
+                          Text('تم ارسال رساله الى عنوان بريدك الالكتروني')));
+                },
+                child: Text(
+                  'هل نسيت كلمة السر ؟',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+              ),
+            )
           ],
         ));
   }
