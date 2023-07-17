@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wan_test/database/db.dart';
-import 'package:wan_test/pages/home_page.dart';
-import 'package:wan_test/pages/personal_detailes.dart';
-import 'package:wan_test/pages/welcome_page.dart';
+import 'package:wan_test/Views/pages/home_page.dart';
+import 'package:wan_test/Views/pages/personal_detailes.dart';
+import 'package:wan_test/Views/pages/welcome_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {

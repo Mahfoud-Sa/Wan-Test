@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wan_test/database/db.dart';
-import 'package:wan_test/pages/bill_page.dart';
+import 'package:wan_test/Views/pages/bill_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wan_test/pages/personal_detailes.dart';
+import 'package:wan_test/Views/pages/personal_detailes.dart';
 import 'package:provider/provider.dart';
-import 'package:wan_test/pages/welcome_page.dart';
+import 'package:wan_test/Views/pages/welcome_page.dart';
 import 'package:wan_test/person.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

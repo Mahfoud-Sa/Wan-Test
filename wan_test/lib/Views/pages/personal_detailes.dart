@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wan_test/database/db.dart';
-import 'package:wan_test/pages/home_page.dart';
-import 'package:wan_test/pages/login_page.dart';
-import 'package:wan_test/pages/personal_detailes_edit_page.dart';
+import 'package:wan_test/Views/pages/home_page.dart';
+import 'package:wan_test/Views/pages/login_page.dart';
+import 'package:wan_test/Views/pages/personal_detailes_edit_page.dart';
 
 class PersonalDetailesPage extends StatelessWidget {
   PersonalDetailesPage({super.key});

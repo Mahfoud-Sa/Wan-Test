@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wan_test/pages/home_page.dart';
-import 'package:wan_test/pages/singin_page.dart';
+import 'package:wan_test/ViewModels/loginVM.dart';
+import 'package:wan_test/Views/pages/home_page.dart';
+import 'package:wan_test/Views/pages/singin_page.dart';
 import 'package:provider/provider.dart';
 import 'package:wan_test/person.dart';
-import '../database/db.dart';
+import '../../database/db.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _AddStudentPageState();
 }
@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _AddStudentPageState extends State<LoginPage> {
   SqlDb sql = SqlDb();
   final formstate = GlobalKey<FormState>();
+  LoginVM data = new LoginVM();
 
   TextEditingController userCont = TextEditingController();
   TextEditingController passwordCont = TextEditingController();
@@ -88,27 +89,37 @@ class _AddStudentPageState extends State<LoginPage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 120, 170, 223)),
                     onPressed: () async {
-                      if (formstate.currentState!.validate()) {
-                        if (await sql.LogIn(userCont.text, passwordCont.text)) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()),
-                              (route) => false);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  showCloseIcon: true,
-                                  backgroundColor: Colors.green,
-                                  content: Text('اهلا وسهلا')));
+                      if (await data.checkInternet()) {
+                        if (formstate.currentState!.validate()) {
+                          if (await data.LogIn(
+                              userCont.text.trim(), passwordCont.text.trim())) {
+                            // data.LogIn(userCont.text, passwordCont.text);
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()),
+                                (route) => false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    showCloseIcon: true,
+                                    backgroundColor: Colors.green,
+                                    content: Text('اهلا وسهلا')));
 
-                          //print(provider.psr.e_mail);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  showCloseIcon: true,
-                                  backgroundColor: Colors.red,
-                                  content: Text(
-                                      'اسم المستخدم او كلمة المرور خطاء')));
+                            //print(provider.psr.e_mail);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    showCloseIcon: true,
+                                    backgroundColor: Colors.red,
+                                    content: Text(
+                                        'اسم المستخدم او كلمة المرور خطاء')));
+                          }
                         }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                showCloseIcon: true,
+                                backgroundColor: Colors.red,
+                                content: Text('تاكد من اتال الانترنت')));
                       }
                     },
                     child: const Text(

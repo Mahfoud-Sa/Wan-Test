@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wan_test/pages/login_page.dart';
-import 'package:wan_test/pages/singin_page.dart';
+import 'package:wan_test/ViewModels/welcomeVM.dart';
+import 'package:wan_test/Views/pages/login_page.dart';
+import 'package:wan_test/Views/pages/singin_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
+  WelcomePage({super.key});
+  WelcomVM data = WelcomVM();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +21,11 @@ class WelcomePage extends StatelessWidget {
                 autoPlay: true,
                 viewportFraction: 100,
                 aspectRatio: 0),
-            items: [1, 2, 3, 4, 5, 6, 7, 8].map((i) {
+            items: data.welcomeImages.map((imagePath) {
               return Builder(
                 builder: (BuildContext context) {
                   return Image.asset(
-                    "assets/images/welcome_$i.jpg",
+                    imagePath,
                     fit: BoxFit.fill,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height - 200,
@@ -33,11 +34,11 @@ class WelcomePage extends StatelessWidget {
               );
             }).toList(),
           ),
-          const Text(
-            "_مرحبا بكم في تطبيق _اسم التطبيق_",
+          Text(
+            data.title,
             style: TextStyle(fontSize: 20),
           ),
-          Text("قم بالدخول او سجل الدخول "),
+          Text(data.subTitle),
           ElevatedButton.icon(
             icon: FaIcon(FontAwesomeIcons.google),
             onPressed: () {},

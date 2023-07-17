@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wan_test/pages/login_page.dart';
-import 'package:wan_test/pages/singin_page.dart';
+import 'package:wan_test/Views/pages/login_page.dart';
+import 'package:wan_test/Views/pages/singin_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class bill_page extends StatelessWidget {
