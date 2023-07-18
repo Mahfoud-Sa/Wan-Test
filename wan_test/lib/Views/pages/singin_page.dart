@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:wan_test/Modles/userModel.dart';
 import 'package:wan_test/database/db.dart';
 import 'package:wan_test/Views/pages/home_page.dart';
 import 'package:wan_test/Views/pages/login_page.dart';
+import 'package:wan_test/ViewModels/signinVM.dart';
 
 class SinginPage extends StatefulWidget {
   SinginPage({super.key});
@@ -12,7 +14,8 @@ class SinginPage extends StatefulWidget {
 }
 
 class _AddStudentPageState extends State<SinginPage> {
-  SqlDb sql = SqlDb();
+  signinVM data = signinVM();
+  //SqlDb sql = SqlDb();
   final formstate = GlobalKey<FormState>();
 
   TextEditingController fullNameCont = TextEditingController();
@@ -269,18 +272,28 @@ class _AddStudentPageState extends State<SinginPage> {
                       backgroundColor: Color.fromARGB(255, 120, 170, 223)),
                   onPressed: () {
                     if (formstate.currentState!.validate()) {
-                      sql.insertData('''
+                      UserModel user = UserModel(
+                        name: userNameCont.text,
+                        password: passwordCont.text,
+                        fullName: fullNameCont.text,
+                        email: emailCont.text,
+                        phoneNum: int.parse(phoneNumCont.text),
+                        address: addCont.text,
+                        gender: gender == '1' ? true : false,
+                        image: 'null',
+                      );
+                      data.signIN(user);
+                      /*sql.insertData('''
                           INSERT INTO "persons" ( 'fullName','idNum','phoneNum','e_mail','address','usrName',password,gender)
                           VALUES ("${fullNameCont.text}","${idCont.text}","${phoneNumCont.text}","${emailCont.text}","${addCont.text}","${userNameCont.text}","${passwordCont.text}","${gender}")
-                          ''');
-
+                          ''');*/
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(builder: (context) => SinginPage()),
                           (route) => false);
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           showCloseIcon: true,
                           backgroundColor: Colors.green,
-                          content: Text('Done')));
+                          content: Text('تمام')));
                     }
                   },
                   child: const Text(

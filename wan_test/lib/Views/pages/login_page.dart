@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _AddStudentPageState extends State<LoginPage> {
-  SqlDb sql = SqlDb();
+  //SqlDb sql = SqlDb();
   final formstate = GlobalKey<FormState>();
   LoginVM data = new LoginVM();
 

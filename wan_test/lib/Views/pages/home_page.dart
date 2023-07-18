@@ -19,13 +19,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Future<String> getAcount() async {
     SharedPreferences personShrpre = await SharedPreferences.getInstance();
-    return personShrpre.get('personEmail').toString();
+    return personShrpre.get('email').toString();
   }
 
   Future<String> getFullName() async {
     List<String> account = [];
     SharedPreferences personShrpre = await SharedPreferences.getInstance();
-    return personShrpre.get('personName').toString();
+    return personShrpre.get('fullName').toString();
   }
 
   void initState() {

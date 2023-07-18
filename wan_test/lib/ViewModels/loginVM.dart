@@ -5,7 +5,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:wan_test/Views/pages/Modles/userModel.dart';
+import 'package:wan_test/Modles/userModel.dart';
+import 'package:wan_test/repositories/users/users_api.dart';
 
 class LoginVM {
   Dio dio = Dio();
@@ -16,13 +17,7 @@ class LoginVM {
 
   Future<bool> LogIn(String userName, String password) async {
     try {
-      var respons = await dio.post('https://wantest123.000webhostapp.com/',
-          queryParameters: {'userName': userName, 'password': password});
-      if (respons.data == 'nullnull') {
-        return false;
-      }
-      //print();
-      UserModel user = UserModel.fromJson(jsonDecode(respons.data));
+      UserModel user = await usersAPI().get(userName, password);
 
       SharedPreferences userData = await SharedPreferences.getInstance();
       userData.setString('name', user.name!);
@@ -33,7 +28,6 @@ class LoginVM {
       userData.setString('address', user.address!);
       userData.setBool('gender', user.gender!);
       userData.setString('image', user.image!);
-      //userData.setString('fullName', respons.data['1']);
 
       dio.close();
       return true;

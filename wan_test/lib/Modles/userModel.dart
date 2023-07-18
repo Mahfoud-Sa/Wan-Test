@@ -31,4 +31,14 @@ class UserModel {
     gender = json['gender'] == '1' ? true : false;
     image = json['image'];
   }
+  Map<String, dynamic> toJson(UserModel user) => {
+        'name': user.name!,
+        'password': user.name!,
+        'fullName': user.name!,
+        'email': user.name!,
+        'phoneNum': user.name!,
+        'address': user.name!,
+        'gender': user.name!,
+        'image': user.name!,
+      };
 }
