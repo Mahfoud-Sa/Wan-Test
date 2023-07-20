@@ -15,25 +15,37 @@ class LoginVM {
     return InternetConnectionChecker().hasConnection;
   }
 
-  Future<bool> LogIn(String userName, String password) async {
+  Future<String> LogIn(String userName, String password) async {
     try {
-      UserModel user = await usersAPI().get(userName, password);
+      UserModel user = await UserModel(
+          id: 0,
+          name: 'admin',
+          password: '770266408',
+          address: 'Hadramout',
+          email: 'binsabbah@',
+          fullName: 'Mahfoud Bin sabbah',
+          phoneNum: 770266408,
+          gender: true,
+          image: 'null',
+          idNumCard: 234855437); //await usersAPI().get(userName, password);
 
       SharedPreferences userData = await SharedPreferences.getInstance();
+      userData.setInt('id', user.id!);
       userData.setString('name', user.name!);
       userData.setString('password', user.password!);
       userData.setString('fullName', user.fullName!);
+      userData.setInt('idNumCard', user.idNumCard!);
       userData.setString('email', user.email!);
       userData.setInt('phoneNum', user.phoneNum!);
       userData.setString('address', user.address!);
       userData.setBool('gender', user.gender!);
       userData.setString('image', user.image!);
 
-      dio.close();
-      return true;
+      //dio.close();
+      return 'اهلا وسهلا';
     } catch (e) {
       dio.close();
-      return false;
+      return e.toString();
     }
   }
 }

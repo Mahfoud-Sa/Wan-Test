@@ -276,17 +276,15 @@ class _AddStudentPageState extends State<SinginPage> {
                         name: userNameCont.text,
                         password: passwordCont.text,
                         fullName: fullNameCont.text,
-                        email: emailCont.text,
                         phoneNum: int.parse(phoneNumCont.text),
+                        idNumCard: int.parse(idCont.text),
+                        email: emailCont.text,
                         address: addCont.text,
                         gender: gender == '1' ? true : false,
                         image: 'null',
                       );
                       data.signIN(user);
-                      /*sql.insertData('''
-                          INSERT INTO "persons" ( 'fullName','idNum','phoneNum','e_mail','address','usrName',password,gender)
-                          VALUES ("${fullNameCont.text}","${idCont.text}","${phoneNumCont.text}","${emailCont.text}","${addCont.text}","${userNameCont.text}","${passwordCont.text}","${gender}")
-                          ''');*/
+
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => SinginPage()),
                           (route) => false);

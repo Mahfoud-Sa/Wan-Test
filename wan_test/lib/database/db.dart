@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wan_test/person.dart';
+//import 'package:wan_test/person.dart';
 import 'package:wan_test/database/db.dart';
 
 class SqlDb {
@@ -34,7 +34,7 @@ class SqlDb {
 
   _onCreate(Database db, int version) async {
     await db.execute('''
-  CREATE TABLE $tableName ( 
+  CREATE TABLE users ( 
     "id" INTEGER  PRIMARY KEY  AUTOINCREMENT, 
     "fullName" TEXT NOT NULL,
     "idNum" INTEGER ,
@@ -99,20 +99,6 @@ class SqlDb {
   }
 }
 
-class AppProbider with ChangeNotifier {
-  int userIndex = -1;
-  ThemeMode themMode = ThemeMode.light;
-  //List<String> account = getAcount();
-  void changeTheme() {
-    if (themMode == ThemeMode.dark) {
-      themMode = ThemeMode.light;
-    } else {
-      themMode = ThemeMode.dark;
-    }
-    // darkThemePreference.setDarkTheme(value);
-    notifyListeners();
-  }
-}
 
 
 

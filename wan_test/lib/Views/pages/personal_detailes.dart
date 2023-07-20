@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:wan_test/Modles/userModel.dart';
+import 'package:wan_test/ViewModels/personal_detailesVM.dart';
 import 'package:wan_test/database/db.dart';
 import 'package:wan_test/Views/pages/home_page.dart';
 import 'package:wan_test/Views/pages/login_page.dart';
 import 'package:wan_test/Views/pages/personal_detailes_edit_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalDetailesPage extends StatelessWidget {
   PersonalDetailesPage({super.key});
-  SqlDb sql = SqlDb();
+  //SqlDb sql = SqlDb();
+  PersonalDetailesVM data = PersonalDetailesVM();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class PersonalDetailesPage extends StatelessWidget {
           ],
         ),
         body: FutureBuilder(
-          future: sql.getCurrentPerson(),
+          future: data.getCurrentUser(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
@@ -58,8 +62,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['fullName'],
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.fullName!,
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
 
@@ -71,8 +75,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['idNum'].toString(),
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.idNumCard!.toString(),
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                         //phone number
@@ -84,8 +88,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['phoneNum'].toString(),
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.phoneNum!.toString(),
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
@@ -96,8 +100,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['e_mail'],
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.email!,
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
@@ -108,8 +112,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['address'],
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.address!,
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
@@ -120,8 +124,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['usrName'],
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.name!,
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
@@ -132,8 +136,8 @@ class PersonalDetailesPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            snapshot.data!['password'].toString(),
-                            style: TextStyle(fontSize: 24),
+                            snapshot.data!.password!,
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                       ],

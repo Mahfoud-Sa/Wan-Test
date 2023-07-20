@@ -4,8 +4,8 @@ import 'package:wan_test/ViewModels/loginVM.dart';
 import 'package:wan_test/Views/pages/home_page.dart';
 import 'package:wan_test/Views/pages/singin_page.dart';
 import 'package:provider/provider.dart';
-import 'package:wan_test/person.dart';
 import '../../database/db.dart';
+import '../../provider/appProvider.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -91,28 +91,21 @@ class _AddStudentPageState extends State<LoginPage> {
                     onPressed: () async {
                       if (await data.checkInternet()) {
                         if (formstate.currentState!.validate()) {
-                          if (await data.LogIn(
-                              userCont.text.trim(), passwordCont.text.trim())) {
+                          String loginState = await data.LogIn(
+                              userCont.text.trim(), passwordCont.text.trim());
+                          if (loginState == 'اهلا وسهلا') {
                             // data.LogIn(userCont.text, passwordCont.text);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => HomePage()),
                                 (route) => false);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    showCloseIcon: true,
-                                    backgroundColor: Colors.green,
-                                    content: Text('اهلا وسهلا')));
-
-                            //print(provider.psr.e_mail);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    showCloseIcon: true,
-                                    backgroundColor: Colors.red,
-                                    content: Text(
-                                        'اسم المستخدم او كلمة المرور خطاء')));
                           }
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              showCloseIcon: true,
+                              backgroundColor: loginState != 'اهلا وسهلا'
+                                  ? Colors.red
+                                  : Colors.green,
+                              content: Text(loginState)));
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(

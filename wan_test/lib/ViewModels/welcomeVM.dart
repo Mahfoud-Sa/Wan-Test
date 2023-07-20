@@ -16,5 +16,5 @@ class WelcomVM {
     "assets/images/welcome_8.jpg",
   ];
 
-  void NavigatoToSingIn() {}
+  // void NavigatoToSingIn() {}
 }

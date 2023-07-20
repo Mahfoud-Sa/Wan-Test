@@ -9,10 +9,11 @@ class usersAPI extends UserRepository {
 
   @override
   Future<UserModel> get(String name, String password) async {
-    var respons = await dio.post('https://wantest123.000webhostapp.com/',
-        queryParameters: {'userName': name, 'password': password});
+    var respons = await dio.post(
+      'http://localhost/usersApp/logIn.php',
+    );
     if (respons.statusCode == HttpStatus.ok) {
-      if (respons.data != 'nullnull') {
+      if (respons.data != 'null') {
         return UserModel.fromJson(jsonDecode(respons.data));
       } else {
         throw Exception();
@@ -28,18 +29,18 @@ class usersAPI extends UserRepository {
   }
 
   @override
-  Future<UserModel> create(UserModel user) async {
+  Future<bool> create(UserModel user) async {
     var respons = await dio.post('https://wantest123.000webhostapp.com/',
         queryParameters: UserModel().toJson(user));
-    print(respons);
+    //print(respons);
     if (respons.statusCode == HttpStatus.ok) {
-      if (respons.data != 'nullnull') {
-        return UserModel.fromJson(jsonDecode(respons.data));
+      if (respons.statusCode == 200) {
+        return true;
       } else {
-        throw Exception();
+        return false;
       }
     } else {
-      throw Exception();
+      return false;
     }
   }
 }
