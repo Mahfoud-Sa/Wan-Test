@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan_test/ViewModels/home_VM.dart';
 import 'package:wan_test/database/db.dart';
 import 'package:wan_test/Views/pages/bill_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,16 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  Future<String> getAcount() async {
-    SharedPreferences personShrpre = await SharedPreferences.getInstance();
-    return personShrpre.get('email').toString();
-  }
-
-  Future<String> getFullName() async {
-    List<String> account = [];
-    SharedPreferences personShrpre = await SharedPreferences.getInstance();
-    return personShrpre.get('fullName').toString();
-  }
+  HomeVM data = HomeVM();
 
   void initState() {
     // TODO: implement initState
@@ -47,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             builder: (context, value, child) {
               return UserAccountsDrawerHeader(
                   accountName: FutureBuilder(
-                    future: getFullName(),
+                    future: data.getFullName(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData) {
@@ -58,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   accountEmail: FutureBuilder(
-                    future: getAcount(),
+                    future: data.getAcount(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData) {

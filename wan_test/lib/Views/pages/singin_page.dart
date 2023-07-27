@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wan_test/Modles/userModel.dart';
+import 'package:wan_test/ViewModels/welcomeVM.dart';
+import 'package:wan_test/Views/pages/welcome_page.dart';
 import 'package:wan_test/database/db.dart';
 import 'package:wan_test/Views/pages/home_page.dart';
 import 'package:wan_test/Views/pages/login_page.dart';
@@ -44,6 +46,8 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'ادخل اسمك الرباعي';
+                } else if (value!.length >= 100) {
+                  return 'اسمك الرباعي طويل جدا';
                 }
                 return null;
               },
@@ -68,7 +72,10 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return "ادخل رقم هويتك";
+                } else if (value!.length > 9) {
+                  return "رقم الهوية لا يمكن ان يكون اكبر من 9اعداد";
                 }
+
                 return null;
               },
               controller: idCont,
@@ -92,6 +99,8 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'رقم الجوال';
+                } else if (value!.length > 9) {
+                  return "رقم الهاتف لا يمكن ان يكون اكبر من 9 اعداد";
                 }
                 return null;
               },
@@ -116,6 +125,8 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'ادخل بريدك الاكتروني';
+                } else if (!value!.contains('@')) {
+                  return 'يجب ان يحتوي بريدك الالكتروني على @';
                 }
                 return null;
               },
@@ -138,6 +149,8 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'ادخل عنوانك';
+                } else if (value!.length >= 50) {
+                  return 'عنوانك الشخصي طويل جدا';
                 }
                 return null;
               },
@@ -160,6 +173,8 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'اسم المستخدم';
+                } else if (value!.length > 20) {
+                  return 'اسم المستخدم لا يجب ان يكون اكبر من 20 حرف';
                 }
                 return null;
               },
@@ -182,6 +197,8 @@ class _AddStudentPageState extends State<SinginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'كلمة السر';
+                } else if (value!.length > 16) {
+                  return ' ';
                 }
                 return null;
               },
@@ -270,8 +287,9 @@ class _AddStudentPageState extends State<SinginPage> {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 120, 170, 223)),
-                  onPressed: () {
+                  onPressed: () async {
                     if (formstate.currentState!.validate()) {
+                      //print(idCont.text);
                       UserModel user = UserModel(
                         name: userNameCont.text,
                         password: passwordCont.text,
@@ -280,18 +298,23 @@ class _AddStudentPageState extends State<SinginPage> {
                         idNumCard: int.parse(idCont.text),
                         email: emailCont.text,
                         address: addCont.text,
-                        gender: gender == '1' ? true : false,
+                        gender: gender == 'Male' ? 1 : 0,
                         image: 'null',
                       );
-                      data.signIN(user);
+                      String loginState = await data.signIN(user);
+                      /*if (loginState == 'تم تسجيلك بنجاح') {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => WelcomePage()),
+                            (route) => false);
+                      }*/
 
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => SinginPage()),
-                          (route) => false);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           showCloseIcon: true,
-                          backgroundColor: Colors.green,
-                          content: Text('تمام')));
+                          backgroundColor: loginState == loginState
+                              ? Colors.red
+                              : Colors.green,
+                          content: Text(loginState.toString())));
                     }
                   },
                   child: const Text(

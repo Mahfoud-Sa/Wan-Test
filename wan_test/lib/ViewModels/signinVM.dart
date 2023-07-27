@@ -11,14 +11,14 @@ class signinVM {
     return InternetConnectionChecker().hasConnection;
   }
 
-  Future<bool> signIN(UserModel user) async {
+  Future<String> signIN(UserModel user) async {
     try {
-      usersAPI().create(user);
+      await usersAPI().create(user);
       dio.close();
-      return true;
+      return 'تم تسجيلك بنجاح';
     } catch (e) {
       dio.close();
-      return false;
+      return e.toString();
     }
   }
 }

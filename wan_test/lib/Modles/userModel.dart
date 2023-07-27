@@ -7,7 +7,7 @@ class UserModel {
   String? email;
   int? phoneNum;
   String? address;
-  bool? gender;
+  int? gender;
   String? image;
   UserModel(
       {this.id,
@@ -26,23 +26,24 @@ class UserModel {
     name = json['name'];
     password = json['password'];
     fullName = json['fullName'];
-    idNumCard = json['idNumCard'];
+    idNumCard = int.parse(json['idNumCard']);
     email = json['email'];
     phoneNum = int.parse(json['phoneNum']);
     address = json['address'];
-    gender = json['gender'] == '1' ? true : false;
+    gender = json['gender'] == 'Male' ? 1 : 0;
     image = json['image'];
+    //image = json['idNumCard'];
   }
   Map<String, dynamic> toJson(UserModel user) => {
-        'id': user.id!,
+        //'id': user.id!,
         'name': user.name!,
-        'password': user.name!,
-        'fullName': user.name!,
-        'idNumCard': idNumCard,
-        'email': user.name!,
-        'phoneNum': user.name!,
-        'address': user.name!,
-        'gender': user.name!,
-        'image': user.name!,
+        'password': user.password!,
+        'fullName': user.fullName!,
+        'idNumCard': user.idNumCard,
+        'email': user.email!,
+        'phoneNum': user.phoneNum!,
+        'address': user.address!,
+        'gender': user.gender!,
+        'image': user.image!,
       };
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wan_test/ViewModels/loginVM.dart';
 import 'package:wan_test/Views/pages/home_page.dart';
@@ -61,6 +62,7 @@ class _AddStudentPageState extends State<LoginPage> {
                 ),
                 //id
                 TextFormField(
+                  obscureText: data.password_visivility,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "كلمة السر";
@@ -73,6 +75,16 @@ class _AddStudentPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     contentPadding: new EdgeInsets.symmetric(vertical: 0.0),
                     border: InputBorder.none,
+                    prefixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          data.passwordVisivility();
+                        });
+                      },
+                      icon: Icon(data.password_visivility
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                    ),
                     suffixIcon: Icon(
                       Icons.phone,
                       color: Colors.grey,
