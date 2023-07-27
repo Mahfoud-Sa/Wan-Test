@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:wan_test/Modles/userModel.dart';
+import 'package:wan_test/ViewModels/personal_detailes_edit_pageVM.dart';
 import 'package:wan_test/database/db.dart';
 import 'package:wan_test/Views/pages/home_page.dart';
 import 'package:wan_test/Views/pages/login_page.dart';
@@ -15,6 +17,7 @@ class PersonalDetailesEditPage extends StatefulWidget {
 
 class _PersonalDetailesEditPageState extends State<PersonalDetailesEditPage> {
   SqlDb sql = SqlDb();
+  PersonalDetailesEditVM data = PersonalDetailesEditVM();
   final formstate = GlobalKey<FormState>();
   TextEditingController fullNameCont = TextEditingController();
   TextEditingController idCont = TextEditingController();
@@ -54,7 +57,7 @@ class _PersonalDetailesEditPageState extends State<PersonalDetailesEditPage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text("اسم المستخدم"),
+                      child: Text("اسمك الرباعي"),
                     ),
                     //full name
                     Padding(
@@ -201,11 +204,11 @@ class _PersonalDetailesEditPageState extends State<PersonalDetailesEditPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text("كرر كلمة السر"),
                     ),
-                    // password
+                    // RePassword
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextFormField(
-                        controller: passwordCont,
+                        controller: repasswordCont,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "كرر كلمة السر";
@@ -223,17 +226,30 @@ class _PersonalDetailesEditPageState extends State<PersonalDetailesEditPage> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 Color.fromARGB(255, 120, 170, 223)),
-                        onPressed: () {
+                        onPressed: () async {
                           if (formstate.currentState!.validate()) {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()),
-                                (route) => false);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    showCloseIcon: true,
-                                    backgroundColor: Colors.green,
-                                    content: Text('Done')));
+                            UserModel user = UserModel(
+                              name: userNameCont.text,
+                              password: passwordCont.text,
+                              fullName: fullNameCont.text,
+                              phoneNum: int.parse(phoneNumCont.text),
+                              idNumCard: int.parse(idCont.text),
+                              email: emailCont.text,
+                              address: addCont.text,
+                              gender: gender == 'Male' ? 1 : 0,
+                              image: 'null',
+                            );
+                            String editState = await data.edit(user);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                showCloseIcon: true,
+                                backgroundColor: Colors.green,
+                                content: Text('${editState}')));
+                            if ('تم تعديل بياناتك بنجاح' == editState) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()),
+                                  (route) => false);
+                            }
                           }
                         },
                         child: const Text(

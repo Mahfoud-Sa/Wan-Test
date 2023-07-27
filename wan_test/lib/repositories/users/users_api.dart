@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:wan_test/Modles/userModel.dart';
 import 'package:wan_test/repositories/users/users_repositories.dart';
+import 'dart:convert';
 
 class usersAPI extends UserRepository {
   String baseURL = 'http://192.168.1.122/';
@@ -108,8 +109,17 @@ class usersAPI extends UserRepository {
   }
 
   @override
-  Future<UserModel> put(UserModel user) {
-    // TODO: implement put
-    throw UnimplementedError();
+  Future<UserModel> put(int id, UserModel user) async {
+    Map<String, dynamic> userParameters = UserModel().toJson(user)
+      ..addAll({'userID': id});
+    var respons;
+    try {
+      respons = await dio.post('${baseURL}usersApp/update.php',
+          queryParameters: userParameters);
+
+      return user;
+    } catch (e) {
+      throw 'خطاء بالاتصال بالسيرفر';
+    }
   }
 }
